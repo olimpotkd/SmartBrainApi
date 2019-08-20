@@ -8,42 +8,17 @@ const db = knex({
   client: 'pg',
   connection: {
     host : '127.0.0.1',
-    user : 'carlos',
-    password : '',
+    user : 'postgres',
+    password : 'asdf',
     database : 'smart-brain'
   }
 });
 
-db.select('*').from('users')
-.then( data => {
-  console.log(data);
-})
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors()); 
 
-
-const database = {
-  users: [
-    {
-      id: '123',
-      name: 'John',
-      email: 'john@gmail.com',
-      password: 'cookies',
-      entries: 0,
-      joined: new Date()
-    },
-    {
-      id: '124',
-      name: 'Sally',
-      email: 'sally@gmail.com',
-      password: 'bananas',
-      entries: 0,
-      joined:  new Date()
-    }
-  ]
-}
 
 app.get('/', (req, res) => {
   res.send(database.users)
@@ -59,6 +34,8 @@ app.post('/signin', (req, res) => {
 })
 
 app.post('/register', (req, res) => {
+  console.log(req.body);
+
   const {email, name, password } = req.body;
   
   db('users')
@@ -68,7 +45,7 @@ app.post('/register', (req, res) => {
       name: name,
       joined: new Date()
     })
-    .then(users => {
+    .then(user => {
       res.json(user[0]);
     })
     .catch(err => res.status(400).json('Unable to register'));
