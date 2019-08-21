@@ -34,26 +34,37 @@ app.post('/signin', (req, res) => {
 })
 
 app.post('/register', (req, res) => {
-  console.log(req.body);
-
   const {email, name, password } = req.body;
-  
-  db('users')
-    .returning('*')
-    .insert({
+  const hash = bcrypt.hashSync(password);
+
+  db.transaction(trx => {
+    trx.insert({
       email: email,
-      name: name,
-      joined: new Date()
+      hash: hash
     })
-    .then(user => {
-      res.json(user[0]);
+    .into('login')
+    .returning('email')
+    .then(loginEmail => {
+      db('users')
+      .returning('*')
+      .insert({
+        email: loginEmail[0],
+        name: name,
+        joined: new Date()
+      })
+      .then(user => {
+        res.json(user[0]);
+      })
     })
-    .catch(err => res.status(400).json('Unable to register'));
+    .then(trx.commit);
+  })
+  .catch(err => res.status(400).json('Unable to register'));
+
+
 })
 
 app.get('/profile/:id', (req, res) => {
   const { id } = req.params;
-  let found = false;
   db.select('*').from('users').where({id})
     .then(users => {
       if(users.length) {
@@ -65,14 +76,21 @@ app.get('/profile/:id', (req, res) => {
 });
 
 app.put('/image/', (req, res) => {
-  const { id } = req.body;
-  userFound = database.users.find(user => user.id === id);
+  console.log(req.body);
+  const { id, currentEntries } = req.body;
 
-  if (userFound) {
-    userFound.entries++;
-    return res.json(userFound.entries);
-  }
-  return res.status(404).json('No user found');
+  db('users').where({id})
+  .increment('entries', 1)
+  .returning('entries')
+  .then(entries => {
+    if(!entries.length) {
+      return res.status(404).json('Unable to update entries');
+    }
+    res.json(entries);
+  })
+  .catch(err => {
+    return res.status(404).json('Unable to update entries');
+  })    
 })
 
 
