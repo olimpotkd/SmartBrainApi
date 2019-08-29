@@ -1,5 +1,8 @@
 const handleSignIn = (req, res, db, bcrypt) => {
     const { email, password } = req.body;
+    if (!email, !password) {
+      return res.status(400).json('Incorrect form submission');
+  }
   
   db.select('email', 'hash').from('login')
   .where('email', '=', email)
@@ -9,7 +12,6 @@ const handleSignIn = (req, res, db, bcrypt) => {
       return db.select('*').from('users')
       .where('email', '=', email)
       .then(user => {
-        console.log(user[0]);
         res.json(user[0]);
       })
       .catch(err => {res.status(400).json('Unable to get user')})

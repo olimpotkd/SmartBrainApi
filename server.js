@@ -29,9 +29,10 @@ app.post('/register', (req, res) => { register.handleRegister(req, res, db, bcry
 
 app.get('/profile/:id', (req, res) => { profile.getProfileById(req, res, db) });
 
-app.put('/image/', (req, res) => { image.updateEntries(req, res, db) })
+app.put('/image', (req, res) => { image.updateEntries(req, res, db) })
+app.post('/imageUrl', (req, res) => { image.handleAPICall(req, res, db) })
 
-
-app.listen(3000, () => {
-  console.log("Server running on port 3000");
+const port = process.env.PORT;
+app.listen(port, () => {
+  console.log("Server running on port ", port);
 });
