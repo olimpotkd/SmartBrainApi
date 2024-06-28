@@ -2,7 +2,7 @@
 createdb 'smart-brain'
 
 -- 
-CREATE TABLE user (
+CREATE TABLE users (
   id serial PRIMARY KEY,
   name VARCHAR(100),
   email VARCHAR(100) UNIQUE NOT NULL,

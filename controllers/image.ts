@@ -2,8 +2,9 @@ const Clarifai = require("clarifai");
 import { Request, Response } from "express";
 import { Knex } from "knex";
 
+// TODO Carlos - Fix apiKey not being read from .env
 const app = new Clarifai.App({
-  apiKey: process.env.CLARIFAI_API_KEY,
+  apiKey: "919f51430f744f08963bb175cd5a8942",
 });
 
 const handleAPICall = (req: Request, res: Response) => {

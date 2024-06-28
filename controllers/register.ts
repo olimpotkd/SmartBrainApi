@@ -22,10 +22,8 @@ const handleRegister = (req: Request, res: Response, db: Knex) => {
         hash: hash,
       })
       .into("login")
-      .returning("email")
       .then((loginEmail) => {
         db("users")
-          .returning("*")
           .insert({
             email: loginEmail[0],
             name: name,
@@ -37,7 +35,10 @@ const handleRegister = (req: Request, res: Response, db: Knex) => {
       })
       .then(trx.commit)
       .catch(trx.rollback);
-  }).catch((err) => res.status(400).json("Unable to register"));
+  }).catch((err) => {
+    console.log(err);
+    res.status(400).json("Unable to register");
+  });
 };
 
 export { handleRegister };
