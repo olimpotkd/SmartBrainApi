@@ -1,4 +1,7 @@
-const getProfileById = (req, res, db) => {
+import { Request, Response } from "express";
+import { Knex } from "knex";
+
+const getProfileById = (req: Request, res: Response, db: Knex) => {
   const { id } = req.params;
   db.select("*")
     .from("users")
@@ -11,6 +14,5 @@ const getProfileById = (req, res, db) => {
       }
     });
 };
-module.exports = {
-  getProfileById: getProfileById,
-};
+
+export { getProfileById };

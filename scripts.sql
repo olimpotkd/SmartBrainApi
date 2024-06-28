@@ -5,7 +5,7 @@ createdb 'smart-brain'
 CREATE TABLE user (
   id serial PRIMARY KEY,
   name VARCHAR(100),
-  email text UNIQUE NOT NULL,
+  email VARCHAR(100) UNIQUE NOT NULL,
   entries bigint DEFAULT 0,
   joined TIMESTAMP NOT NULL
 );
@@ -13,8 +13,8 @@ CREATE TABLE user (
 -- 
 CREATE TABLE login (
   id serial PRIMARY KEY,
-  hash varchar(100) NOT NULL,
-  email text UNIQUE NOT NULL
+  hash VARCHAR(100) NOT NULL,
+  email VARCHAR(100) UNIQUE NOT NULL
 );
 
 ---

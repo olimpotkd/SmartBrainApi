@@ -1,7 +1,15 @@
-handleRegister = (req, res, db, bcrypt) => {
-  const { email, name, password } = req.body;
+import { Request, Response } from "express";
+import { Knex } from "knex";
+import bcrypt from "bcrypt-nodejs";
 
-  if ((!email, !name, !password)) {
+const handleRegister = (req: Request, res: Response, db: Knex) => {
+  const {
+    email,
+    name,
+    password,
+  }: { email: string; name: string; password: string } = req.body;
+
+  if (!email || !name || !password) {
     return res.status(400).json("Incorrect form submission");
   }
 
@@ -31,6 +39,5 @@ handleRegister = (req, res, db, bcrypt) => {
       .catch(trx.rollback);
   }).catch((err) => res.status(400).json("Unable to register"));
 };
-module.exports = {
-  handleRegister: handleRegister,
-};
+
+export { handleRegister };

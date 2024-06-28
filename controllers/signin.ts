@@ -1,6 +1,11 @@
-const handleSignIn = (req, res, db, bcrypt) => {
-  const { email, password } = req.body;
-  if ((!email, !password)) {
+import { Request, Response } from "express";
+import { Knex } from "knex";
+import bcrypt from "bcrypt-nodejs";
+
+const handleSignIn = (req: Request, res: Response, db: Knex) => {
+  const { email, password }: { email: string; password: string } = req.body;
+
+  if (!email || !password) {
     return res.status(400).json("Incorrect form submission");
   }
 
@@ -28,6 +33,5 @@ const handleSignIn = (req, res, db, bcrypt) => {
       res.status(400).json("Wrong credentials");
     });
 };
-module.exports = {
-  handleSignIn: handleSignIn,
-};
+
+export { handleSignIn };
