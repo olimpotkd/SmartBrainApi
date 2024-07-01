@@ -1,22 +1,34 @@
-const Clarifai = require("clarifai");
+import { Input, Model } from "clarifai-nodejs";
 import { Request, Response } from "express";
 import { Knex } from "knex";
 
-// TODO Carlos - Fix apiKey not being read from .env
-const app = new Clarifai.App({
-  apiKey: "919f51430f744f08963bb175cd5a8942",
-});
-
 const handleAPICall = (req: Request, res: Response) => {
-  app.models
-    .predict(Clarifai.FACE_DETECT_MODEL, req.body.input)
+  const input = Input.getInputFromUrl({
+    inputId: "image",
+    imageUrl: req.body.input,
+  });
+
+  const model = new Model({
+    authConfig: {
+      pat: <string>process.env.CLARIFAI_PAT,
+      userId: <string>process.env.CLARIFAI_USERID,
+      appId: <string>process.env.CLARIFAI_APPID,
+    },
+    modelId: "face-detection",
+  });
+
+  model
+    .predict({ inputs: [input] })
     .then((data: any) => res.json(data))
-    .catch((err: any) => res.status(400).json("Unable to work with API"));
+    .catch((err: any) => {
+      console.log(err);
+      return res.status(400).json("Unable to work with API");
+    });
 };
 
 const updateEntries = (req: Request, res: Response, db: Knex) => {
   console.log(req.body);
-  const { id, currentEntries } = req.body;
+  const { id } = req.body;
 
   db("users")
     .where({ id })
