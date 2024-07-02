@@ -9,13 +9,9 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const db = knex({
-  client: "mysql",
+  client: "sqlite3",
   connection: {
-    host: process.env.DATABASE_URL,
-    port: 3306,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
+    filename: "./db.sqlite",
   },
 });
 
