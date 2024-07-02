@@ -11,8 +11,9 @@
   "author": "Carlos Reynoso",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^5.1.1",
-    "clarifai-nodejs": "^0.0.3",
+    "bcrypt-nodejs": "^0.0.3",
+    "bcryptjs": "^2.4.3",
+    "clarifai-nodejs": "^0.0.2",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "knex": "^3.1.0",
