@@ -39,15 +39,16 @@ const handleRegister = (req: Request, res: Response, db: Knex) => {
           });
       })
       .then((user) => {
+        trx.commit();
         res.json(user);
-        return trx.commit;
       })
       .catch((err) => {
         console.log(err);
-        trx.rollback;
+        trx.rollback();
         res.status(400).json("Unable to register");
       });
   }).catch((err) => {
+    // Handle any errors that fall through
     console.log(err);
     res.status(400).json("Unable to register");
   });
