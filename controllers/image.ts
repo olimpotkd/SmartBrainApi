@@ -43,7 +43,7 @@ const updateEntries = (req: Request, res: Response, db: Knex) => {
         if (!entries.length) {
           throw new Error("Unable to find user");
         }
-        res.json(entries[0]);
+        res.json(entries[0].entries);
       })
       .then(trx.commit)
       .catch((err) => {
