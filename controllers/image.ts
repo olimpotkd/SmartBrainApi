@@ -32,19 +32,28 @@ const updateEntries = (req: Request, res: Response, db: Knex) => {
   console.log(req.body);
   const { id } = req.body;
 
-  db("users")
-    .where({ id })
-    .increment("entries", 1)
-    .returning("entries")
-    .then((entries) => {
-      if (!entries.length) {
-        return res.status(404).json("Unable to update entries");
-      }
-      res.json(entries);
-    })
-    .catch((err) => {
-      return res.status(404).json("Unable to update entries");
-    });
+  db.transaction((trx) => {
+    trx("users")
+      .where({ id })
+      .increment("entries", 1)
+      .then(() => {
+        return trx("users").where({ id }).select("entries");
+      })
+      .then((entries) => {
+        if (!entries.length) {
+          throw new Error("Unable to find user");
+        }
+        res.json(entries[0]);
+      })
+      .then(trx.commit)
+      .catch((err) => {
+        trx.rollback();
+        res.status(404).json("Unable to update entries");
+      });
+  }).catch((err) => {
+    // This catch is for any errors that might slip through the transaction handling
+    res.status(404).json("Unable to update entries");
+  });
 };
 
 export { updateEntries, handleAPICall };
