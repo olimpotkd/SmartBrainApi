@@ -20,7 +20,7 @@ const handleAPICall = (req: Request, res: Response) => {
   model
     .predict({ inputs: [input] })
     .then((data: any) => {
-      res.json(data);
+      res.json(data[0]);
     })
     .catch((err: any) => {
       console.log(err);
