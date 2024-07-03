@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Knex } from "knex";
-import bcrypt from "bcrypt-nodejs";
+import bcrypt from "bcrypt";
 
 const handleSignIn = (req: Request, res: Response, db: Knex) => {
   const { email, password }: { email: string; password: string } = req.body;

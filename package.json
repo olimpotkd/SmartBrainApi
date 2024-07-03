@@ -11,8 +11,7 @@
   "author": "Carlos Reynoso",
   "license": "ISC",
   "dependencies": {
-    "bcrypt-nodejs": "^0.0.3",
-    "bcryptjs": "^2.4.3",
+    "bcrypt": "^5.1.1",
     "clarifai-nodejs": "^0.0.2",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
@@ -21,7 +20,7 @@
     "ts-node": "^10.9.2"
   },
   "devDependencies": {
-    "@types/bcrypt-nodejs": "^0.0.31",
+    "@types/bcrypt": "^5.0.2",
     "@types/express": "^4.17.21",
     "nodemon": "^3.1.4"
   }

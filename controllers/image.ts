@@ -19,7 +19,9 @@ const handleAPICall = (req: Request, res: Response) => {
 
   model
     .predict({ inputs: [input] })
-    .then((data: any) => res.json(data))
+    .then((data: any) => {
+      res.json(data);
+    })
     .catch((err: any) => {
       console.log(err);
       return res.status(400).json("Unable to work with API");
