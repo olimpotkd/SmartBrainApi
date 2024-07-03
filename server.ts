@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import cors from "cors";
 import knex from "knex";
 import * as register from "./controllers/register";
 import * as profile from "./controllers/profile";
@@ -17,8 +18,7 @@ const db = knex({
 
 const app = express();
 app.use(express.json());
-// app.use(bodyParser.json());
-// app.use(cors());
+app.use(cors());
 
 app.post("/signin", (req: Request, res: Response) => {
   signin.handleSignIn(req, res, db);
